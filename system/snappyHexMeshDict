@@ -14,241 +14,54 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-// Type of mesh generation:
-//  - castellated (default)
-//  - castellatedBufferLayer
-//type            castellatedBufferLayer;
-
-// Which of the steps to run
 castellatedMesh true;
 snap            true;
-addLayers       true;
+addLayers       false;
 
-
-// Optional: single region surfaces get patch names according to
-//           surface only. Multi-region surfaces get patch name
-//           surface "_ "region. Default is true
-// singleRegionName false;
-
-// Optional: avoid patch-face merging. Allows mesh to be used for
-//           refinement/unrefinement
-// mergePatchFaces    false; // default true
-
-// Optional: preserve all generated patches. Default is to remove
-//          zero-sized patches.
-// keepPatches true;
-
-
-// Geometry. Definition of all surfaces. All surfaces are of class
-// searchableSurface.
-// Surfaces are used
-// - to specify refinement for any mesh cell intersecting it
-// - to specify refinement for any mesh cell inside/outside/near
-// - to 'snap' the mesh boundary to the surface
 geometry
 {
-    refinement1
+    squareBaffle
     {
-        type box;
-        min (-1 -2 -1);
-        max ( 1  2  1);
+        type searchablePlate;
+        origin          (0.02 -0.4 -0.5);
+        span            (0.02 0 0.02);
+        rotation
+        {
+            axis    (0 0 1);    // Rotation axis (e.g., z-axis)
+            angle   10;      // Rotation angle in degrees or radians
+        }
     }
-/*
-    // Shell for directional refinement
-    wakeBox
-    {
-        type box;
-        min (1.5 1 -0.5);
-        max (3.5 2 0.5);
-    }
-*/
-    internalFace.stl { name internalFace; type triSurfaceMesh;}
-
-    aerofoil.stl
-    {
-        name aerofoil;
-        type triSurfaceMesh;
-
-        //tolerance   1E-5;   // optional:non-default tolerance on intersections
-        //maxTreeDepth 10;    // optional:depth of octree. Decrease only in case
-                              // of memory limitations.
-
-        // Per region the patchname. If not provided will be <surface>_<region>.
-        // Note: this name cannot be used to identity this region in any
-        //       other part of this dictionary; it is only a name
-        //       for the combination of surface+region (which is only used
-        //       when creating patches)
-//        regions
-//        {
-//            secondSolid
-//            {
-//                name mySecondPatch;
-//            }
-//        }
-    }
-
-/*
-    sphere2
-    {
-        type    sphere;
-        centre  (1.5 1.5 1.5);
-        radius  1.03;
-    }
-*/
 };
 
 
-// Settings for the castellatedMesh generation.
 castellatedMeshControls
 {
-
-    // Refinement parameters
-    // ~~~~~~~~~~~~~~~~~~~~~
-
-    // If local number of cells is >= maxLocalCells on any processor
-    // switches from from refinement followed by balancing
-    // (current method) to (weighted) balancing before refinement.
     maxLocalCells 1000000;
-
-    // Overall cell limit (approximately). Refinement will stop immediately
-    // upon reaching this number so a refinement level might not complete.
-    // Note that this is the number of cells before removing the part which
-    // is not 'visible' from the keepPoint. The final number of cells might
-    // actually be a lot less.
     maxGlobalCells 20000000;
-
-    // The surface refinement loop might spend lots of iterations refining just
-    // a few cells. This setting will cause refinement to stop if
-    // <= minRefinementCells cells are selected for refinement. Note: it will
-    // at least do one iteration unless
-    //  a: the number of cells to refine is 0
-    //  b: minRefinementCells = -1. This is a special value indicating
-    //     no refinement.
     minRefinementCells 0;
-
-    // Allow a certain level of imbalance during refining
-    // (since balancing is quite expensive)
-    // Expressed as fraction of perfect balance (= overall number of cells /
-    // nProcs). 0=balance always.
     maxLoadUnbalance 0.10;
-
-    // Number of buffer layers between different levels.
-    // 1 means normal 2:1 refinement restriction, larger means slower
-    // refinement.
-    nCellsBetweenLevels 4;
-
-
-    // Explicit feature edge refinement
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    // Specifies a level for any cell intersected by explicitly provided
-    // edges.
-    // This is a featureEdgeMesh, read from constant/triSurface for now.
-    // Specify 'levels' in the same way as the 'distance' mode in the
-    // refinementRegions (see below). The old specification
-    //      level   2;
-    // is equivalent to
-    //      levels  ((0 2));
-
+    nCellsBetweenLevels 3;
     features
     (
-        {
-            file "aerofoil.eMesh";
-            level 0;        // Have level 2 for all cells intersected
-        //                      // by feature.
-        //    levels ((0.1 2)); // Have level 2 for all cells within
-        //                      // 0.1 of feature.
-        }
+
     );
-
-
-    // Surface based refinement
-    // ~~~~~~~~~~~~~~~~~~~~~~~~
-
-    // Specifies two levels for every surface. The first is the minimum level,
-    // every cell intersecting a surface gets refined up to the minimum level.
-    // The second level is the maximum level. Cells that 'see' multiple
-    // intersections where the intersections make an
-    // angle > resolveFeatureAngle get refined up to the maximum level.
 
     refinementSurfaces
     {
-        internalFace { level (0 0); faceZone internalFace; }//faceType baffle;}
-        aerofoil
+        squareBaffle
         {
-            // Surface-wise min and max refinement level
-            level (2 2);
-
-
-
-
-            //- Optional increment (on top of max level) in small gaps
+            level (1 1);
+            // Optional: override the default feature angle for this surface
+            //featureAngle 30;
+            // Optional: override the default planar angle for this surface
+            //planarAngle 30;
+            // Optional: override the default gapLevelIncrement for this surface
             //gapLevelIncrement 2;
-
-            //- Optional angle to detect small-large cell situation
-            //  perpendicular to the surface. Is the angle of face w.r.t.
-            //  the local surface normal. Use on flat(ish) surfaces only.
-            //  Otherwise leave out or set to negative number.
-            //perpendicularAngle 10;
-
-            //- Optional faceZone and (for closed surface) cellZone with
-            //  how to select the cells that are in the cellZone
-            //  (inside / outside / specified insidePoint)
-            //  The orientation of the faceZone is
-            //  - if on cellZone(s) : point out of (minimum) cellZone
-            //  - if freestanding   : oriented according to surface
-
-            //faceZone sphere;
-            //cellZone sphere;
-            //cellZoneInside inside;    // outside/insidePoint
-            //insidePoint    (1 1 1);   // if (cellZoneInside == insidePoint)
-
-            //- Optional specification of what to do with faceZone faces:
-            //      internal : keep them as internal faces (default)
-            //      baffle   : create baffles from them. This gives more
-            //                 freedom in mesh motion
-            //      boundary : create free-standing boundary faces (baffles
-            //                 but without the shared points)
-            //faceType baffle;
         }
     }
 
-    // Feature angle:
-    // - used if min and max refinement level of a surface differ
-    // - used if feature snapping (see snapControls below) is used
     resolveFeatureAngle 30;
-
-    //- Optional increment (on top of max level) in small gaps
-    //gapLevelIncrement 2;
-
-
-    // Planar angle:
-    // - used to determine if surface normals
-    //   are roughly the same or opposite. Used
-    //      - in proximity refinement
-    //      - to decide when to merge free-standing baffles
-    //        (if e.g. running in surfaceSimplify mode set this to 180 to
-    //         merge all baffles)
-    //      - in snapping to avoid snapping to nearest on 'wrong' side
-    //        of thin gap
-    //
-    // If not specified same as resolveFeatureAngle
     planarAngle 30;
-
-
-    // Region-wise refinement
-    // ~~~~~~~~~~~~~~~~~~~~~~
-
-    // Specifies refinement level for cells in relation to a surface. One of
-    // three modes
-    // - distance. 'levels' specifies per distance to the surface the
-    //   wanted refinement level. The distances need to be specified in
-    //   increasing order.
-    // - inside. 'levels' is only one entry and only the level is used. All
-    //   cells inside the surface get refined up to the level. The surface
-    //   needs to be closed for this to be possible.
-    // - outside. Same but cells outside.
-
     refinementRegions
     {
 //        refinement1
@@ -378,7 +191,7 @@ castellatedMeshControls
 
         // Ad 1. Specify a single location and how to treat faces inbetween
         //       cellZones
-        locationInMesh (-0.457 -0.5 0.43);
+        locationInMesh (0.0001 0.0001 0);
 
         // Whether any faceZones (as specified in the refinementSurfaces)
         // are only on the boundary of corresponding cellZones.
@@ -431,31 +244,6 @@ castellatedMeshControls
     //           for a complete region.
     //nCellZoneErodeIter 2;
 }
-
-
-// Internal macro for mesh-motion solver to use
-_meshMotionSolver
-{
-    solver  displacementPointSmoothing;
-    displacementPointSmoothingCoeffs
-    {
-        //// Use geometricElementTransform to maintain relative sizes
-        //pointSmoother           geometricElementTransform;
-        //transformationParameter 0.667;
-        //nPointSmootherIter      10;
-
-        // Use laplacian to untangle problem areas
-        pointSmoother           laplacian;
-        nPointSmootherIter      10;
-
-        //relaxationFactors       (1.0 0.8 0.6 0.4 0.2 0.0);
-        //meshQuality
-        //{
-        //    #includeEtc "caseDicts/meshQualityDict"
-        //}        
-    }
-}
-
 
 // Settings for the snapping.
 snapControls
