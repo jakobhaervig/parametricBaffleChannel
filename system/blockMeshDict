@@ -38,33 +38,56 @@ edges
 
 boundary
 (
-    airFlow
+    inlet
     {
         type patch;
         faces
         (
-            (2 6 5 1)  //outlet
             (0 4 7 3)  //inlet
-            (0 3 2 1)  //lowerWall
-            (4 5 6 7)  //upperWall
         );
     }
 
-    front
+    outlet
     {
-        type symmetryPlane;
+        type patch;
         faces
         (
-            (3 7 6 2)
+            (1 2 6 5)  //outlet
         );
     }
 
+    top
+    {
+        type wall;
+        faces
+        (
+            (3 7 6 2)  //top
+        );
+    }
+
+    bottom
+    {
+        type wall;
+        faces
+        (
+            (0 1 5 4)  //bottom
+        );
+    }
+    
     back
     {
-        type symmetryPlane;
+        type wall;
         faces
         (
-            (1 5 4 0)  //back
+            (0 3 2 1)  //back
+        );
+    }
+    front
+    {
+        type wall;
+        faces
+        (
+            (4 5 6 7)  //front
         );
     }
 );

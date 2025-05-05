@@ -16,27 +16,47 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-3
+6
 (
-    airFlow
+    inlet
     {
         type            patch;
-        nFaces          120;
+        nFaces          20;
         startFace       940;
     }
-    front
+    outlet
     {
-        type            symmetryPlane;
-        inGroups        1(symmetryPlane);
+        type            patch;
+        nFaces          20;
+        startFace       960;
+    }
+    top
+    {
+        type            wall;
+        inGroups        1(wall);
         nFaces          200;
-        startFace       1060;
+        startFace       980;
+    }
+    bottom
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          200;
+        startFace       1180;
     }
     back
     {
-        type            symmetryPlane;
-        inGroups        1(symmetryPlane);
-        nFaces          200;
-        startFace       1260;
+        type            wall;
+        inGroups        1(wall);
+        nFaces          40;
+        startFace       1380;
+    }
+    front
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          40;
+        startFace       1420;
     }
 )
 
