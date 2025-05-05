@@ -30,28 +30,28 @@ FoamFile
         nFaces          100;
         startFace       5600;
     }
-    top
+    walls_top
     {
         type            wall;
         inGroups        1(wall);
         nFaces          200;
         startFace       5700;
     }
-    bottom
+    walls_bottom
     {
         type            wall;
         inGroups        1(wall);
         nFaces          200;
         startFace       5900;
     }
-    back
+    walls_back
     {
         type            wall;
         inGroups        1(wall);
         nFaces          200;
         startFace       6100;
     }
-    front
+    walls_front
     {
         type            wall;
         inGroups        1(wall);

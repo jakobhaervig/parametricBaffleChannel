@@ -23,7 +23,7 @@ geometry
     squareBaffle
     {
         type searchablePlate;
-        origin          (0.02 -0.004 -0.005);
+        origin          (0.02 -0.004 -0.004);
         span            (0.002 0 0.002);
         rotation
         {
