@@ -56,7 +56,7 @@ boundary
         );
     }
 
-    top
+    walls_top
     {
         type wall;
         faces
@@ -65,7 +65,7 @@ boundary
         );
     }
 
-    bottom
+    walls_bottom
     {
         type wall;
         faces
@@ -74,7 +74,7 @@ boundary
         );
     }
 
-    back
+    walls_back
     {
         type wall;
         faces
@@ -82,7 +82,7 @@ boundary
             (0 3 2 1)  //back
         );
     }
-    front
+    walls_front
     {
         type wall;
         faces
