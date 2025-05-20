@@ -23,12 +23,17 @@ geometry
     squareBaffle
     {
         type searchablePlate;
-        origin          (0.02 -0.004 -0.004);
-        span            (0.002 0 0.002);
-        rotation
+        origin (0.02 0 0);      // Start point of the plate
+        span (0 0.005 0.005);        // Vector direction and length of the plate
+
+        transform
         {
-            axis    (0 0 1);    // Rotation axis (e.g., z-axis)
-            angle   10;      // Rotation angle in degrees or radians
+            rotation
+            {
+                origin (0.02 0 0);   // Rotation center
+                axis (0 1 0);     // Rotation axis
+                angle 45;         // In degrees
+            }
         }
     }
 };
@@ -50,7 +55,7 @@ castellatedMeshControls
     {
         squareBaffle
         {
-            level (1 1);
+            level (2 2);
             // Optional: override the default feature angle for this surface
             //featureAngle 30;
             // Optional: override the default planar angle for this surface
