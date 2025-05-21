@@ -7,6 +7,7 @@ restore0Dir
 
 touch case.foam
 runApplication blockMesh
+python3 baffle.py
 runApplication snappyHexMesh #-overwrite
 
 #------------------------------------------------------------------------------
