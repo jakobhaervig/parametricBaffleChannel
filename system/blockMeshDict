@@ -40,7 +40,10 @@ boundary
 (
     inlet
     {
-        type patch;
+        type mappedPatch;
+        offset          (0.02 0 0);
+        sampleMode      nearestCell;
+//        type patch;
         faces
         (
             (0 4 7 3)  //inlet

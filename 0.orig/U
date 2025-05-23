@@ -16,30 +16,37 @@ FoamFile
 
 dimensions      [0 1 -1 0 0 0 0];
 
-internalField   uniform (25.75 3.62 0);
+inletValue      (0.1 0 0);
+
+internalField   uniform $inletValue;
 
 boundaryField
 {
     inlet
     {
-        type            freestreamVelocity;
-        freestreamValue $internalField;
+        type                mapped;
+        value               uniform $inletValue;
+        interpolationScheme cell;
+        setAverage          true;
+        average             $inletValue;
+
+//        type            fixedValue;
+//        value           uniform $inletValue;
     }
 
     outlet
     {
-        type            freestreamVelocity;
-        freestreamValue $internalField;
+        type            zeroGradient;
     }
 
-    walls
+    "walls_.*"
     {
         type            noSlip;
     }
 
-    frontAndBack
+    "baffles_.*"
     {
-        type            empty;
+        type            noSlip;
     }
 }
 
