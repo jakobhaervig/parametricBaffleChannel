@@ -1,18 +1,18 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v2412                                 |
+|  \\    /   O peration     | Version:  2412                                  |
 |   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 FoamFile
 {
-    version     2.0;
-    format      ascii;
-    class       dictionary;
-    object      controlDict;
+    version         2;
+    format          ascii;
+    class           dictionary;
+    object          controlDict;
 }
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 application     simpleFoam;
 
@@ -49,37 +49,15 @@ functions
     TemperatureTransport
     {
         type            scalarTransport;
-        libs            (solverFunctionObjects);
-
+        libs            ( solverFunctionObjects );
         enabled         true;
         writeControl    writeTime;
         writeInterval   1;
-
         field           T;
-        D               0.143e-6;
-
+        D               1.43e-07;
         write           true;
-/*
-        fvOptions
-        {
-            unitySource
-            {
-                type            scalarSemiImplicitSource;
-                enabled         true;
-
-                selectionMode   all;
-                volumeMode      specific;
-
-                sources
-                {
-                    s           (1 0);
-                }
-            }
-        }
-
-        resetOnStartUp  false;
-*/
     }
 }
+
 
 // ************************************************************************* //
