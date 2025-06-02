@@ -57,6 +57,42 @@ functions
         D               1.43e-07;
         write           true;
     }
+
+    outletUniformity
+	{
+    	type    	surfaceFieldValue;
+    	libs    	(fieldFunctionObjects);
+    	fields  	(U);
+    	writeFields no;
+    	log     	true;
+    	regionType  patch;
+    	name    	outlet;
+    	operation   uniformity;
+	}
+
+    outletFluxWeightedTemp
+    {
+        type            surfaceFieldValue;
+        libs            (fieldFunctionObjects);
+        writeControl    writeTime;
+        regionType      patch;
+        fields          (T);
+        name            outlet;
+        operation       weightedAverage;
+        weightField     phi;
+        writeFields     no;
+    }
+
+    pDrop
+	{
+    	type    	surfaceFieldValue;
+    	libs    	(fieldFunctionObjects);
+    	fields  	(p);
+    	writeFields no;
+    	regionType  patch;
+    	name    	inlet;
+    	operation   areaAverage;
+	}
 }
 
 
