@@ -44,7 +44,7 @@ boundaryField
         type            noSlip;
     }
 
-    "baffles_.*"
+    baffles
     {
         type            noSlip;
     }

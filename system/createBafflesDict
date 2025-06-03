@@ -9,40 +9,39 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
-    object      T;
+    class       dictionary;
+    object      createBafflesDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 0 0 1 0 0 0];
+internalFacesOnly true;
 
-internalField   uniform 0;
-
-boundaryField
+// Baffles to create.
+baffles
 {
-    inlet
+    baffleFaces
     {
-        type            fixedValue;
-        value           uniform 20;
-    }
+        // Mandatory: type must be 'internalBaffle'
+        type faceZone;
 
-    outlet
-    {
-        type            zeroGradient;
-    }
+        // Name of the faceZone created by snappyHexMesh
+        zoneName baffleZone;
 
-    "walls_.*"
-    {
-        type            fixedValue;
-        value           uniform 0;
-    }
-
-    baffles
-    {
-        type            zeroGradient;
+        patchPairs
+        {
+            master
+            {
+                //- Master side patch
+                name            baffleMaster;
+                type            wall;
+            }
+            slave
+            {
+                //- Slave side patch
+                name            baffleSlave;
+                type            wall;
+            }
+        }
     }
 
 }
-
-
-// ************************************************************************* //

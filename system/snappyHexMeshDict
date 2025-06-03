@@ -20,21 +20,10 @@ addLayers       false;
 
 geometry
 {
-    squareBaffle
+    baffles
     {
-        type searchablePlate;
-        origin (0.02 0 0);      // Start point of the plate
-        span (0 0.005 0.005);        // Vector direction and length of the plate
-
-        transform
-        {
-            rotation
-            {
-                origin (0.02 0 0);   // Rotation center
-                axis (0 1 0);     // Rotation axis
-                angle 45;         // In degrees
-            }
-        }
+        type triSurfaceMesh;
+        file "baffles.stl";
     }
 };
 
@@ -53,15 +42,12 @@ castellatedMeshControls
 
     refinementSurfaces
     {
-        squareBaffle
+        baffles
         {
-            level (2 2);
-            // Optional: override the default feature angle for this surface
-            //featureAngle 30;
-            // Optional: override the default planar angle for this surface
-            //planarAngle 30;
-            // Optional: override the default gapLevelIncrement for this surface
-            //gapLevelIncrement 2;
+            level (3 3);
+            faceZone baffleZone;
+            cellZone baffleCellZone;
+            faceType internal;
         }
     }
 
@@ -196,7 +182,7 @@ castellatedMeshControls
 
         // Ad 1. Specify a single location and how to treat faces inbetween
         //       cellZones
-        locationInMesh (0.0001 0.0001 0);
+        locationInMesh (0.0001 0.0001 0.0001);
 
         // Whether any faceZones (as specified in the refinementSurfaces)
         // are only on the boundary of corresponding cellZones.
@@ -267,7 +253,7 @@ snapControls
     tolerance 1.0;
 
     // Number of mesh displacement relaxation iterations.
-    nSolveIter 30;
+    nSolveIter 50;
 
     // Maximum number of snapping relaxation iterations. Should stop
     // before upon reaching a correct mesh.
@@ -286,10 +272,10 @@ snapControls
 
         // Detect (geometric only) features by sampling the surface
         // (default=false).
-        implicitFeatureSnap false;
+        implicitFeatureSnap true;
 
         // Use castellatedMeshControls::features (default = true)
-        explicitFeatureSnap true;
+        explicitFeatureSnap false;
 
         // Detect features between multiple surfaces
         // (only for explicitFeatureSnap, default = false)
@@ -325,9 +311,6 @@ snapControls
         //  false. This can improve snapping of intersecting surfaces.
         strictRegionSnap true;
 
-
-    // Motion solver to use (when in  castellatedBufferLayer)
-    ${_meshMotionSolver}
 }
 
 // Settings for the layer addition.
@@ -381,11 +364,6 @@ addLayersControls
     //          - angle to nearest surface < slipFeatureAngle (see below)
     layers
     {
-        "internalFace.*" {nSurfaceLayers 20; }
-        aerofoil
-        {
-            nSurfaceLayers 20;
-        }
     }
 
     // If points get not extruded do nGrow layers of connected faces that are

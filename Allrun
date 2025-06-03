@@ -1,13 +1,18 @@
 #!/bin/sh
 cd "${0%/*}" || exit                                # Run from this directory
+
 . ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
 #------------------------------------------------------------------------------
+
+$HOME/SALOME-9.14.0/salome -t baffles.py
 
 restore0Dir
 
 touch case.foam
+
 runApplication blockMesh
-#python3 baffle.py
-#runApplication snappyHexMesh #-overwrite
-runApplication $(getApplication)
-#------------------------------------------------------------------------------
+
+runApplication snappyHexMesh -overwrite
+#runApplication $(getApplication)
+
+#createBaffles
