@@ -44,10 +44,8 @@ castellatedMeshControls
     {
         baffles
         {
-            level (3 3);
-            faceZone baffleZone;
-            cellZone baffleCellZone;
-            faceType internal;
+            level (2 2);
+            faceZone baffles_facezone;
         }
     }
 
@@ -253,7 +251,7 @@ snapControls
     tolerance 1.0;
 
     // Number of mesh displacement relaxation iterations.
-    nSolveIter 50;
+    nSolveIter 10;
 
     // Maximum number of snapping relaxation iterations. Should stop
     // before upon reaching a correct mesh.

@@ -16,31 +16,38 @@ FoamFile
 
 internalFacesOnly true;
 
-// Baffles to create.
 baffles
 {
-    baffleFaces
+    baffleWall
     {
-        // Mandatory: type must be 'internalBaffle'
-        type faceZone;
-
-        // Name of the faceZone created by snappyHexMesh
-        zoneName baffleZone;
-
-        addToPatches true;
-
+        type         faceZone;
+        faceZone     baffles_facezone;
+        newPatchName baffleWall;
+        zoneName     baffles_facezone;
+        addToPatch   true;
+        addToZone    true;
+        flipNormals  false;
+        patchType    wall;
         patchPairs
         {
-            type wall;
-            master
+            type            wall;
+            patchFields
             {
-                type            wall;
+                U
+                {
+                    type            fixedValue;
+                    value           uniform (0 0 0);
+                }
+                p
+                {
+                    type            zeroGradient;
+                }
+                T
+                {
+                    type            zeroGradient;
+                }
             }
-            slave
-            {
-                type            wall;
-            }
+
         }
     }
-
 }

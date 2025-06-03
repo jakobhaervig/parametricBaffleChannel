@@ -16,7 +16,7 @@ FoamFile
 
 dimensions      [0 1 -1 0 0 0 0];
 
-inletValue      (0.1 0 0);
+inletValue      (0.01 0 0);
 
 internalField   uniform $inletValue;
 
@@ -29,7 +29,10 @@ boundaryField
         interpolationScheme cell;
         setAverage          true;
         average             $inletValue;
+    }
 
+    inlet
+    {
 //        type            fixedValue;
 //        value           uniform $inletValue;
     }
@@ -44,9 +47,10 @@ boundaryField
         type            noSlip;
     }
 
-    "baffle.*"
+    baffles
     {
-        type            noSlip;
+        type            fixedValue;
+        value           uniform (0 0 0);
     }
 }
 
