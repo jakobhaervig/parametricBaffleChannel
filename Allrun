@@ -13,6 +13,8 @@ touch case.foam
 runApplication blockMesh
 
 runApplication snappyHexMesh -overwrite
-#runApplication $(getApplication)
 
-#createBaffles
+
+runApplication createBaffles -overwrite
+
+runApplication $(getApplication)

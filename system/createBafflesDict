@@ -27,18 +27,17 @@ baffles
         // Name of the faceZone created by snappyHexMesh
         zoneName baffleZone;
 
+        addToPatches true;
+
         patchPairs
         {
+            type wall;
             master
             {
-                //- Master side patch
-                name            baffleMaster;
                 type            wall;
             }
             slave
             {
-                //- Slave side patch
-                name            baffleSlave;
                 type            wall;
             }
         }

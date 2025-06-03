@@ -37,7 +37,7 @@ boundaryField
         value           uniform 0;
     }
 
-    baffles
+    "baffle.*"
     {
         type            zeroGradient;
     }
