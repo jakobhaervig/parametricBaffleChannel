@@ -4,6 +4,10 @@
 ### This file is generated automatically by SALOME v9.14.0 with dump python functionality
 ###
 
+alpha = var_alpha # Angle of baffles in degrees
+L = var_L # Length of baffles in meters
+s = var_s # Distance between baffles in meters
+
 import sys
 import salome
 import math
@@ -32,16 +36,15 @@ OZ = geompy.MakeVectorDXDYDZ(0, 0, 1)
 baffles = []
 for i in range(0, 4):
   if i % 2 == 0:
-      angle = 10
+      angle = alpha
   else:
-      angle = -10
+      angle = -alpha
 
-  Vertex_1 = geompy.MakeVertex(i*0.01, 0, -0.01)
-  Vertex_2 = geompy.MakeVertex(i*0.01, 0, 0.01)
+  Vertex_1 = geompy.MakeVertex(i*s, 0, -0.01)
+  Vertex_2 = geompy.MakeVertex(i*s, 0, 0.01)
   Line_1 = geompy.MakeLineTwoPnt(Vertex_1, Vertex_2)
-  Extrusion_1 = geompy.MakePrismVecH2Ways(Line_1, OY, 0.003)
+  Extrusion_1 = geompy.MakePrismVecH2Ways(Line_1, OY, L)
   geompy.Rotate(Extrusion_1, Line_1, angle*math.pi/180.0)
-
   baffles.append(Extrusion_1)
 
 Compound_1 = geompy.MakeCompound(baffles)

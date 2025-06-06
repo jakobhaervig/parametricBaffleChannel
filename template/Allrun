@@ -4,7 +4,7 @@ cd "${0%/*}" || exit                                # Run from this directory
 . ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
 #------------------------------------------------------------------------------
 
-$HOME/SALOME-9.14.0/salome -t baffles.py
+$HOME/SALOME-9.14.0/salome -t create_baffles.py
 
 restore0Dir
 
