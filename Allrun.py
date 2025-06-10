@@ -18,27 +18,37 @@ def write_parameter_file(casePath, vars):
         for key, value in vars.items():
             f.write(f"{key} {value}\n")
 
+def create_case_from_template(casePath):
+    template_path = Path(__file__).parent / 'template'
+    sp.run(['cp', '-r', str(template_path), casePath], check=True, capture_output=True)
+
 def simulate(casePath):
     sp.run(['./Allrun'], cwd=Path(casePath), check=True, capture_output=True)
 
-def create_case(vars):
+def run(vars):
     global CASECOUNT
     CASECOUNT += 1
     print('############## CASE %05d ##############' % (CASECOUNT))
     casePath = "case%05d" % (CASECOUNT)
-
-    sp.run(['cp', '-r', 'template', casePath], check=True, capture_output=True)
+    create_case_from_template(casePath) 
     replace_variables(casePath, vars)
     write_parameter_file(casePath, vars)
     simulate(casePath)
-
 
 if __name__ == "__main__":
 
     vars = {
         'var_alpha': 10,
         'var_L': 0.003,
-        'var_s': 0.001
+        'var_s': 0.01
     }
 
-    create_case(vars)  # Example call to runCase with sample parameters
+    run(vars)
+
+    vars = {
+        'var_alpha': 20,
+        'var_L': 0.003,
+        'var_s': 0.01
+    }
+
+    run(vars)

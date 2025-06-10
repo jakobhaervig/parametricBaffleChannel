@@ -40,8 +40,8 @@ for i in range(0, 4):
   else:
       angle = -alpha
 
-  Vertex_1 = geompy.MakeVertex(i*s, 0, -0.01)
-  Vertex_2 = geompy.MakeVertex(i*s, 0, 0.01)
+  Vertex_1 = geompy.MakeVertex(i*s, 0, 0)
+  Vertex_2 = geompy.MakeVertex(i*s, 0, 0.001)
   Line_1 = geompy.MakeLineTwoPnt(Vertex_1, Vertex_2)
   Extrusion_1 = geompy.MakePrismVecH2Ways(Line_1, OY, L)
   geompy.Rotate(Extrusion_1, Line_1, angle*math.pi/180.0)
@@ -49,7 +49,7 @@ for i in range(0, 4):
 
 Compound_1 = geompy.MakeCompound(baffles)
 
-geompy.ExportSTL(Compound_1, "constant/triSurface/baffles.stl", True, 0.001, True)
+geompy.ExportSTL(Compound_1, "baffles.stl", True, 0.001, True)
 geompy.addToStudy( O, 'O' )
 geompy.addToStudy( OX, 'OX' )
 geompy.addToStudy( OY, 'OY' )

@@ -6,6 +6,10 @@ cd "${0%/*}" || exit                                # Run from this directory
 
 $HOME/SALOME-9.14.0/salome -t create_baffles.py
 
+mkdir -p constant/triSurface
+
+cp baffles.stl constant/triSurface
+
 restore0Dir
 
 touch case.foam

@@ -18,11 +18,11 @@ FoamFile
 constructFrom patch;
 sourceCase ".";
 
-sourcePatches (front);   
-exposedPatchName back;
+sourcePatches (back);   
+exposedPatchName front;
  
 extrudeModel  plane;
 thickness     0.001;
 
-flipNormals false;
+flipNormals true;
 mergeFaces false;
