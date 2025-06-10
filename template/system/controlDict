@@ -58,17 +58,17 @@ functions
         write           true;
     }
 
-    outletUniformity
-	{
-    	type    	surfaceFieldValue;
-    	libs    	(fieldFunctionObjects);
-    	fields  	(U);
-    	writeFields no;
-    	log     	true;
-    	regionType  patch;
-    	name    	outlet;
-    	operation   uniformity;
-	}
+    // outletUniformity
+	// {
+    // 	type    	surfaceFieldValue;
+    // 	libs    	(fieldFunctionObjects);
+    // 	fields  	(U);
+    // 	writeFields no;
+    // 	log     	true;
+    // 	regionType  patch;
+    // 	name    	outlet;
+    // 	operation   uniformity;
+	// }
 
     outletFluxWeightedTemp
     {
