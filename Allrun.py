@@ -4,7 +4,16 @@ import numpy as np
 import platypus as pp
 import csv
 
-CASECOUNT = 0
+CASECOUNT = 1
+
+def checkCommand(command):
+    if not debug:
+        return
+
+    if not command.returncode:
+        print('command {} succesfull'.format(command.args))
+    else:
+        print('command {} failed'.format(command.args))
 
 def replace_variables(casePath, vars):
     for file in list(casePath.glob('**/*')):
@@ -16,9 +25,8 @@ def replace_variables(casePath, vars):
 
 def run_fcn(X):
     global CASECOUNT
-    CASECOUNT += 1
-
     print('############## CASE %05d ##############' % (CASECOUNT))
+
     cwd = Path(__file__).parent
     case_path = cwd / f'case{CASECOUNT:04d}'
     template_path = cwd / 'template'
@@ -26,6 +34,7 @@ def run_fcn(X):
 
     # Make a copy of the template case
     sp.run(['cp', '-r', template_path, case_path], check=True, capture_output=True)
+
 
     # Replace variables in the case files
     vars = {
@@ -51,6 +60,7 @@ def run_fcn(X):
            csvf = csv.writer(results, delimiter=';', lineterminator='\n')
            csvf.writerow([CASECOUNT, ",".join([str(item) for item in list(vars.values())]), avgP, meanT])
 
+    CASECOUNT += 1
     return [avgP, meanT]  # Return objectives: minimize avgP, maximize meanT
 
 if __name__ == "__main__":
