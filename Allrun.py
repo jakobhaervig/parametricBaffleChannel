@@ -68,8 +68,8 @@ if __name__ == "__main__":
     problem.directions[0] = pp.Direction.MINIMIZE
     problem.directions[1] = pp.Direction.MINIMIZE
     problem.types[0] = pp.Real(0, 90)  # var_alpha
-    problem.types[1] = pp.Real(0.001, 0.009)  # var_L
-    problem.types[2] = pp.Real(0.01, 0.02)  # var_s
+    problem.types[1] = pp.Real(0.0001, 0.0099)  # var_L
+    problem.types[2] = pp.Real(0.01, 0.02)
 
     problem.function = run_fcn
 
