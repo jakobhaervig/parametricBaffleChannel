@@ -47,6 +47,11 @@ boundaryField
         type            noSlip;
     }
 
+    upstream
+    {
+        type            noSlip;
+    }
+
     baffles
     {
         type            fixedValue;

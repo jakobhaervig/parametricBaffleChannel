@@ -30,7 +30,7 @@ writeControl    timeStep;
 
 writeInterval   10;
 
-purgeWrite      0;
+purgeWrite      10;
 
 writeFormat     ascii;
 
@@ -74,7 +74,8 @@ functions
     {
         type            surfaceFieldValue;
         libs            (fieldFunctionObjects);
-        writeControl    writeTime;
+        writeControl    timeStep;
+        writeInterval   1;
         regionType      patch;
         fields          (T);
         name            outlet;
@@ -87,11 +88,13 @@ functions
 	{
     	type    	surfaceFieldValue;
     	libs    	(fieldFunctionObjects);
+        writeControl    timeStep;
+        writeInterval   1;
     	fields  	(p);
-    	writeFields no;
     	regionType  patch;
     	name    	inlet;
     	operation   areaAverage;
+        writeFields     no;
 	}
 }
 
