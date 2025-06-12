@@ -20,7 +20,7 @@ solvers
     {
         solver          GAMG;
         tolerance       1e-06;
-        relTol          0.1;
+        relTol          0;
         smoother        GaussSeidel;
     }
 
@@ -29,17 +29,8 @@ solvers
         solver          smoothSolver;
         smoother        GaussSeidel;
         nSweeps         2;
-        tolerance       1e-08;
-        relTol          0.1;
-    }
-
-    nuTilda
-    {
-        solver          smoothSolver;
-        smoother        GaussSeidel;
-        nSweeps         2;
-        tolerance       1e-08;
-        relTol          0.1;
+        tolerance       1e-06;
+        relTol          1;
     }
 
     T
@@ -48,7 +39,6 @@ solvers
         smoother        symGaussSeidel;
         tolerance       1e-06;
         relTol          0;
-        minIter         1;
     }
 
 }

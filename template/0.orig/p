@@ -36,6 +36,11 @@ boundaryField
         type            zeroGradient;
     }
 
+    upstream
+    {
+        type            zeroGradient;
+    }
+
     baffles
     {
         type            zeroGradient;

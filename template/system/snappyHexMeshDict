@@ -56,7 +56,7 @@ castellatedMeshControls
         baffles
         {                             // refinement level 5 within 1.0 m
             mode distance;            // refinement level 3 within 2.0 m
-            levels ((0.0005 4) (0.001 3) (0.002 2) (0.005 1)); // levels must be ordered nearest first
+            levels ((0.0005 3) (0.002 2) (0.005 1)); // levels must be ordered nearest first
         }
     }
 
@@ -428,7 +428,7 @@ meshQualityControls
     // be reused (e.g. checkMesh -meshQuality)
     #include "meshQualityDict"
 
-    minDeterminant 1e-8;
+    minDeterminant 1e-6;
 
     // Optional : some meshing phases allow usage of relaxed rules.
     // See e.g. addLayersControls::nRelaxedIter.

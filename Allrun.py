@@ -3,17 +3,9 @@ import subprocess as sp
 import numpy as np
 import platypus as pp
 import csv
+import matplotlib.pyplot as plt
 
 CASECOUNT = 1
-
-def checkCommand(command):
-    if not debug:
-        return
-
-    if not command.returncode:
-        print('command {} succesfull'.format(command.args))
-    else:
-        print('command {} failed'.format(command.args))
 
 def replace_variables(casePath, vars):
     for file in list(casePath.glob('**/*')):
@@ -26,6 +18,7 @@ def replace_variables(casePath, vars):
 def run_fcn(X):
     global CASECOUNT
     print('############## CASE %05d ##############' % (CASECOUNT))
+    print('Variables:', X)
 
     cwd = Path(__file__).parent
     case_path = cwd / f'case{CASECOUNT:04d}'
@@ -34,7 +27,6 @@ def run_fcn(X):
 
     # Make a copy of the template case
     sp.run(['cp', '-r', template_path, case_path], check=True, capture_output=True)
-
 
     # Replace variables in the case files
     vars = {
@@ -61,15 +53,17 @@ def run_fcn(X):
            csvf.writerow([CASECOUNT, ",".join([str(item) for item in list(vars.values())]), avgP, meanT])
 
     CASECOUNT += 1
-    return [avgP, meanT]  # Return objectives: minimize avgP, maximize meanT
+    print('Result:', avgP, meanT)
+    return [avgP, meanT],[np.sin(X[0]*np.pi/180)*X[1]+X[2]-0.005]  # Return objectives: minimize avgP, minimise meanT
 
 if __name__ == "__main__":
     problem = pp.Problem(3, 2)
     problem.directions[0] = pp.Direction.MINIMIZE
     problem.directions[1] = pp.Direction.MINIMIZE
-    problem.types[0] = pp.Real(0, 90)  # var_alpha
-    problem.types[1] = pp.Real(0.0001, 0.0099)  # var_L
-    problem.types[2] = pp.Real(0.01, 0.02)
+    problem.types[0] = pp.Real(0, 90)
+    problem.types[1] = pp.Real(0, 0.01)
+    problem.types[2] = pp.Real(-0.005, 0)
+    problem.constraints[:] = "<=0"
 
     problem.function = run_fcn
 
@@ -77,4 +71,11 @@ if __name__ == "__main__":
     algorithm.run(100)
 
     for solution in algorithm.result:
-        print(solution.objectives)
+        print(solution.variables, solution.objectives)
+
+    plt.scatter([s.objectives[0] for s in algorithm.result],
+                [s.objectives[1] for s in algorithm.result])
+    
+    plt.xlabel("$f_1(x)$")
+    plt.ylabel("$f_2(x)$")
+    plt.show()
