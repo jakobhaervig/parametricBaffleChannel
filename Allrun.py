@@ -31,8 +31,7 @@ def run_fcn(X):
     # Replace variables in the case files
     vars = {
         'alpha': X[0],
-        'L': X[1],
-        's': X[2]
+        's': X[1]
     }
     replace_variables(case_path, vars)
 
@@ -54,17 +53,15 @@ def run_fcn(X):
 
     CASECOUNT += 1
     print('Result:', avgP, meanT)
-    return [avgP, meanT],[np.sin(X[0]*np.pi/180)*X[1]+X[2]-0.005]  # Return objectives: minimize avgP, minimise meanT
+    return [avgP, meanT]  # Return objectives: minimize avgP, minimise meanT
 
 if __name__ == "__main__":
-    problem = pp.Problem(3, 2)
+    problem = pp.Problem(2, 2)
     problem.directions[0] = pp.Direction.MINIMIZE
     problem.directions[1] = pp.Direction.MINIMIZE
     problem.types[0] = pp.Real(0, 90)
-    problem.types[1] = pp.Real(0, 0.01)
-    problem.types[2] = pp.Real(-0.005, 0)
-    problem.constraints[:] = "<=0"
-
+    problem.types[1] = pp.Real(0.008, 0.032)
+    
     problem.function = run_fcn
 
     algorithm = pp.NSGAII(problem, population_size=10)

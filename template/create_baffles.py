@@ -5,8 +5,7 @@
 ###
 
 alpha = {alpha} # Angle of baffles in degrees
-s = {s} # Distance from wall
-L = {L} # Length of baffles in meters
+s = {s} # Distance between baffles in meters
 
 import sys
 import salome
@@ -33,21 +32,36 @@ OX = geompy.MakeVectorDXDYDZ(1, 0, 0)
 OY = geompy.MakeVectorDXDYDZ(0, 1, 0)
 OZ = geompy.MakeVectorDXDYDZ(0, 0, 1)
 
-Vertex_1 = geompy.MakeVertex(0, s, 0)
-Vertex_2 = geompy.MakeVertex(0, s, 0.001)
-Line_1 = geompy.MakeLineTwoPnt(Vertex_1, Vertex_2)
-Extrusion_1 = geompy.MakePrismVecH(Line_1, OX, L)
-geompy.Rotate(Extrusion_1, Line_1, alpha*math.pi/180.0)
+L = 0.008
 
-geompy.ExportSTL(Extrusion_1, "baffles.stl", True, 0.001, True)
-geompy.addToStudy( O, 'O' )
-geompy.addToStudy( OX, 'OX' )
-geompy.addToStudy( OY, 'OY' )
-geompy.addToStudy( OZ, 'OZ' )
-geompy.addToStudy( Vertex_1, 'Vertex_1' )
-geompy.addToStudy( Vertex_2, 'Vertex_2' )
-geompy.addToStudy( Line_1, 'Line_1' )
-geompy.addToStudy( Extrusion_1, 'Extrusion_1' )
+baffles = []
+for i in range(0, 4):
+  if i%2 == 0:
+    alpha_i = alpha
+  else:
+    alpha_i = -alpha
+
+  x = i*s
+  y = 0
+
+  Vertex_1 = geompy.MakeVertex(x, y, 0)
+  Vertex_2 = geompy.MakeVertex(x, y, 0.001)
+  Line_1 = geompy.MakeLineTwoPnt(Vertex_1, Vertex_2)
+  Extrusion_1 = geompy.MakePrismVecH2Ways(Line_1, OX, L/2)
+  
+  baffles.append(geompy.Rotate(Extrusion_1, Line_1, alpha_i*math.pi/180.0))
+
+  Compound_1 = geompy.MakeCompound(baffles)
+
+  geompy.ExportSTL(Compound_1, "baffles.stl", True, 0.001, True)
+  geompy.addToStudy( O, 'O' )
+  geompy.addToStudy( OX, 'OX' )
+  geompy.addToStudy( OY, 'OY' )
+  geompy.addToStudy( OZ, 'OZ' )
+  geompy.addToStudy( Vertex_1, 'Vertex_1' )
+  geompy.addToStudy( Vertex_2, 'Vertex_2' )
+  geompy.addToStudy( Line_1, 'Line_1' )
+  geompy.addToStudy( Extrusion_1, 'Extrusion_1' )
 
 
 if salome.sg.hasDesktop():
