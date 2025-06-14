@@ -44,12 +44,12 @@ def run_fcn(X):
 
     if not resultsfile_path.exists():
         with open(resultsfile_path, 'w') as csvfile:
-            csvf = csv.writer(csvfile, delimiter=';', lineterminator='\n')
+            csvf = csv.writer(csvfile, delimiter=',', lineterminator='\n')
             csvf.writerow(['case', ",".join(vars.keys()), 'avgP', 'meanT'])
 
     with open(resultsfile_path, 'a') as results:
-           csvf = csv.writer(results, delimiter=';', lineterminator='\n')
-           csvf.writerow([CASECOUNT, ",".join([str(item) for item in list(vars.values())]), avgP, meanT])
+           csvf = csv.writer(results, delimiter=',', lineterminator='\n')
+           csvf.writerow([CASECOUNT, ",".join([item for item in list(vars.values())]), avgP, meanT])
 
     CASECOUNT += 1
     print('Result:', avgP, meanT)
@@ -64,8 +64,8 @@ if __name__ == "__main__":
     
     problem.function = run_fcn
 
-    algorithm = pp.NSGAII(problem, population_size=10)
-    algorithm.run(100)
+    algorithm = pp.NSGAIII(problem, divisions_outer=12, population_size=50)
+    algorithm.run(500)
 
     for solution in algorithm.result:
         print(solution.variables, solution.objectives)
