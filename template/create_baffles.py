@@ -35,7 +35,7 @@ OZ = geompy.MakeVectorDXDYDZ(0, 0, 1)
 L = 0.008
 
 baffles = []
-for i in range(0, 4):
+for i in range(0, 2):
   if i%2 == 0:
     alpha_i = alpha
   else:

@@ -31,12 +31,7 @@ boundaryField
         value           uniform 0;
     }
 
-    "walls_.*"
-    {
-        type            zeroGradient;
-    }
-
-    upstream
+    ".*_walls"
     {
         type            zeroGradient;
     }

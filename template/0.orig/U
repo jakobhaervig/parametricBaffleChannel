@@ -42,12 +42,18 @@ boundaryField
         type            zeroGradient;
     }
 
-    "walls_.*"
+
+    heated_walls
     {
         type            noSlip;
     }
 
-    upstream
+    upstream_walls
+    {
+        type            noSlip;
+    }
+
+    downstream_walls
     {
         type            noSlip;
     }

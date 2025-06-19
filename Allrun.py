@@ -49,18 +49,18 @@ def run_fcn(X):
 
     with open(resultsfile_path, 'a') as results:
            csvf = csv.writer(results, delimiter=',', lineterminator='\n')
-           csvf.writerow([CASECOUNT, ",".join([item for item in list(vars.values())]), avgP, meanT])
+           csvf.writerow([CASECOUNT, ",".join([str(item) for item in list(vars.values())]), avgP, meanT])
 
     CASECOUNT += 1
     print('Result:', avgP, meanT)
-    return [avgP, meanT]  # Return objectives: minimize avgP, minimise meanT
+    return [avgP, -meanT]  # Return objectives: minimize avgP, maximize meanT
 
 if __name__ == "__main__":
     problem = pp.Problem(2, 2)
     problem.directions[0] = pp.Direction.MINIMIZE
     problem.directions[1] = pp.Direction.MINIMIZE
     problem.types[0] = pp.Real(0, 90)
-    problem.types[1] = pp.Real(0.008, 0.032)
+    problem.types[1] = pp.Real(0.008, 0.040)
     
     problem.function = run_fcn
 

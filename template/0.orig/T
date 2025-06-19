@@ -16,14 +16,14 @@ FoamFile
 
 dimensions      [0 0 0 1 0 0 0];
 
-internalField   uniform 20;
+internalField   uniform 0;
 
 boundaryField
 {
     inlet
     {
         type            fixedValue;
-        value           uniform 20;
+        value           uniform 0;
     }
 
     outlet
@@ -31,13 +31,18 @@ boundaryField
         type            zeroGradient;
     }
 
-    "walls_.*"
+    heated_walls
     {
         type            fixedValue;
-        value           uniform 0;
+        value           uniform 100;
     }
 
-    upstream
+    upstream_walls
+    {
+        type            zeroGradient;
+    }
+
+    downstream_walls
     {
         type            zeroGradient;
     }
