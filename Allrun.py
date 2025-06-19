@@ -45,11 +45,11 @@ def run_fcn(X):
     if not resultsfile_path.exists():
         with open(resultsfile_path, 'w') as csvfile:
             csvf = csv.writer(csvfile, delimiter=',', lineterminator='\n')
-            csvf.writerow(['case', ",".join(vars.keys()), 'avgP', 'meanT'])
+            csvf.writerow(['case'] + list(vars.keys()) + ['avgP', 'meanT'])
 
     with open(resultsfile_path, 'a') as results:
-           csvf = csv.writer(results, delimiter=',', lineterminator='\n')
-           csvf.writerow([CASECOUNT, ",".join([str(item) for item in list(vars.values())]), avgP, meanT])
+            csvf = csv.writer(results, delimiter=',', lineterminator='\n')
+            csvf.writerow([CASECOUNT] + list(vars.values()) + [avgP, meanT])
 
     CASECOUNT += 1
     print('Result:', avgP, meanT)
