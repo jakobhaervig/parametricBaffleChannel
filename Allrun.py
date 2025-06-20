@@ -64,13 +64,13 @@ if __name__ == "__main__":
     
     problem.function = run_fcn
 
-    algorithm = pp.NSGAIII(problem, divisions_outer=12, population_size=50)
-    algorithm.run(500)
+    algorithm = pp.NSGAIII(problem, divisions_outer=12, population_size=20)
+    algorithm.run(50)
 
     for solution in algorithm.result:
         print(solution.variables, solution.objectives)
 
-    plt.scatter([s.objectives[0] for s in algorithm.result],
+    plt.scatter([-s.objectives[0] for s in algorithm.result],
                 [s.objectives[1] for s in algorithm.result])
     
     plt.xlabel("$f_1(x)$")
