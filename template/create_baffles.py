@@ -4,9 +4,6 @@
 ### This file is generated automatically by SALOME v9.14.0 with dump python functionality
 ###
 
-alpha = {alpha} # Angle of baffles in degrees
-s = {s} # Distance between baffles in meters
-
 import sys
 import salome
 import math
@@ -33,6 +30,9 @@ OY = geompy.MakeVectorDXDYDZ(0, 1, 0)
 OZ = geompy.MakeVectorDXDYDZ(0, 0, 1)
 
 L = 0.008
+
+alpha = {alpha}
+s = {s}
 
 baffles = []
 for i in range(0, 2):
